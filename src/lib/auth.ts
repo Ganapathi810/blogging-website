@@ -23,7 +23,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     callbacks : {
         async signIn({ user }) {
             console.log(user)
-            if(!user.email) return false
+            if(!user.email) {
+                throw new Error("GitHub user has no email. Update GitHub scopes.")
+                return false
+            }
 
             try {
                 await prisma.user.upsert({
