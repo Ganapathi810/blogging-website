@@ -7,12 +7,13 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import { Blog } from "@prisma/client"
 import { useRouter } from "next/navigation"
 
 import { useEffect, useState } from "react"
 
 export default function SearchDialog({ open, setOpen } : { open : boolean, setOpen : (open : boolean) => void}) {
-    const [blogs,setBlogs] = useState<any[]>([])
+    const [blogs,setBlogs] = useState<Blog[]>([])
     const [query,setQuery] = useState('')
     const router = useRouter()
 
