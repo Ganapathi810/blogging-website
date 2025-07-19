@@ -2,15 +2,15 @@ import { NextRequest, NextResponse } from "next/server"
 import prisma from '@/lib/prisma'
 
 export async function GET(req : NextRequest) {
-    const { searchParams } = new URL(req.url)
-    const q = searchParams.get('q') || ""
+    const searchParams = req.nextUrl.searchParams
+    const query = searchParams.get('query') || ""
 
-    if(q.length < 2) return NextResponse.json([])
+    if(query.length < 2) return NextResponse.json([])
 
     const results = await prisma.blog.findMany({
         where : {
             title : {
-                contains : q,
+                contains : query,
                 mode : "insensitive"
             }
         },
