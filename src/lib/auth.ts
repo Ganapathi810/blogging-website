@@ -21,6 +21,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
     callbacks : {
         async signIn({ user }) {
+            console.log(user)
             if(!user.email) return false
 
             try {
@@ -38,7 +39,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 })
                 
                 return true;
-                
             } catch (error) {
                 console.error('User creation failed: ',error)
                 return false;
