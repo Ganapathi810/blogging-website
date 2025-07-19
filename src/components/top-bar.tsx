@@ -5,7 +5,9 @@ import DropDownMenu from './drop-down-menu';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { SidebarTrigger } from './ui/sidebar';
 
-const edu_au_vic_wa_nt_hand = Edu_AU_VIC_WA_NT_Hand({})
+const edu_au_vic_wa_nt_hand = Edu_AU_VIC_WA_NT_Hand({
+    subsets : ['latin']
+})
 
 export default function TopBar () {
 
