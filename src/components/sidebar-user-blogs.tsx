@@ -4,7 +4,7 @@ import { SidebarMenuAction, SidebarMenuButton, SidebarMenuItem } from "./ui/side
 import { Ellipsis, Link, Pencil, Trash } from "lucide-react"
 import { DropdownMenu } from "./tiptap-ui-primitive/dropdown-menu"
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
-import { Blog } from "@/generated/prisma"
+import { Blog } from "@prisma/client"
 
 export const UserBlogsInSidebar =  ({ allBlogsOfUser } : { allBlogsOfUser : Blog[]}) => {
     

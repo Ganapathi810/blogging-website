@@ -2,9 +2,9 @@
 
 import { useDeleteBlog } from "@/contexts/delete-blog-context"
 import { Button } from "./ui/button"
-import { Blog } from "@/generated/prisma"
+import { Blog } from "@prisma/client"
 
-export default function DeleteButtonWrapper({ blog } : { blog : Blog}) {
+export default function DeleteButtonWrapper({ blog } : { blog : Blog }) {
     const { setBlogToDelete } = useDeleteBlog()
     return (
         <div>

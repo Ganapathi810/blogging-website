@@ -1,6 +1,6 @@
 "use client"
 
-import { Blog } from "@/generated/prisma"
+import { Blog } from "@prisma/client"
 import { createContext, useContext, useState } from "react"
 
 type DeleteBlogContextType = {
