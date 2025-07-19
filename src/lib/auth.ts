@@ -4,6 +4,7 @@ import  Google from 'next-auth/providers/google'
 import prisma from './prisma'
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
+    debug: true,
     providers : [
         GitHub({
             clientId : process.env.GITHUB_CLIENT_ID,
