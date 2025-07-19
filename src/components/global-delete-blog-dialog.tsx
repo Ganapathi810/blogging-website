@@ -46,6 +46,7 @@ export default function GlobalDeleteBlogAlertDialog() {
         router.push('/?status=error')
       }
     } catch (error) {
+        console.log(error)
       setAlertInfo({
         status: 'error',
         message: 'An unexpected error occurred'
