@@ -5,18 +5,6 @@ import prisma from './prisma'
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
     debug: true,
-    cookies : {
-        sessionToken : {
-            name : `__Secure-next-auth.session-token`,
-            options : {
-                httpOnly : true,
-                sameSite : "lax",
-                path : '/',
-                secure : true,
-                domain : ".vercel.app"
-            }
-        }
-    },
     providers : [
         GitHub({
             clientId : process.env.GITHUB_CLIENT_ID,
@@ -34,9 +22,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
     callbacks : {
         async signIn({ user }) {
-            console.log(user)
+
             if(!user.email) {
-                throw new Error("GitHub user has no email. Update GitHub scopes.")
                 return false
             }
 
@@ -62,14 +49,19 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         },
         async jwt({ token, user }) {
             if(user?.email) {
-                const dbUser = await prisma.user.findUnique({
-                    where : { email : user.email},
-                    select : {
-                        id : true
-                    }
-                })
+                try {
+                    const dbUser = await prisma.user.findUnique({
+                        where : { email : user.email},
+                        select : {
+                            id : true
+                        }
+                    })
 
-                if(dbUser) token.id = dbUser.id.toString()
+                    if(dbUser) token.id = dbUser.id.toString()
+
+                } catch(error) {
+                    console.log('Failed to sign in '+error)
+                }
             }
             
             return token
