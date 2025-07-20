@@ -32,7 +32,7 @@ export default function DropDownMenu() {
                 <DropdownMenuLabel><span className="font-semibold text-wrap">{user?.name}</span></DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-green-200"/>
                 <DropdownMenuItem asChild>
-                    <Link href='/profile/me' className="flex items-center gap-2" >
+                    <Link href={`/author/${user?.id}/profile/`} className="flex items-center gap-2" >
                         <span className="text-green-500">View your profile page</span>
                     </Link>
                 </DropdownMenuItem>
