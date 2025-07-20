@@ -13,6 +13,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getAllBlogsOfUser } from "@/lib/db/blog";
 import { LoadingContextProvider } from "@/contexts/loading";
+import AuthGuard from "@/components/auth-guard";
+import { Blog } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Blogging website",
@@ -32,12 +34,27 @@ export default async function RootLayout({
   const cookieStore = await cookies()
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
 
-  if(!session) {
-    console.log('session does not exits----------------------------------------------------------------------')
-    redirect('/api/auth/signin')
-  } 
+  // if(!session) {
+  //   console.log('session does not exits----------------------------------------------------------------------')
+  //   redirect('/api/auth/signin')
+  // } 
+  let blogsPromise: Promise<Blog[]>;
+
+  if (session?.user?.id) {
+      try {
+          // Assign the promise directly. Do NOT await here, as AppSidebar expects a Promise.
+          blogsPromise = getAllBlogsOfUser(Number(session.user.id));
+      } catch (error) {
+          console.error("Failed to fetch blogs in RootLayout:", error);
+          // On error, resolve to an empty array to maintain the Promise<Blog[]> type.
+          blogsPromise = Promise.resolve([]);
+      }
+  } else {
+      // If no session, immediately resolve to an empty array.
+      blogsPromise = Promise.resolve([]);
+  }
   
-  const blogs = getAllBlogsOfUser(Number(session?.user?.id))
+  // const blogs = getAllBlogsOfUser(Number(session?.user?.id))
   
   return (
     <html lang="en">
@@ -50,11 +67,15 @@ export default async function RootLayout({
                     <div className="flex h-screen w-screen">
                         <GlobalDeleteBlogAlertDialog />
                         <GlobalAlertMessage />
-                        <AppSidebar blogs={blogs} />
+                        <AuthGuard>
+
+                        <AppSidebar blogs={blogsPromise} />
                       <div className="flex-1 flex flex-col bg-green-100">
                           <TopBar />
                           <main className="overflow-y-auto">{children}</main>
                       </div>
+                      </AuthGuard>
+
                     </div>
                   </SidebarProvider>
                 </LoadingContextProvider>
