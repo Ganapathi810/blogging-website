@@ -10,7 +10,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import TopBar from "@/components/top-bar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import { getAllBlogsOfUser } from "@/lib/db/blog";
 import { LoadingContextProvider } from "@/contexts/loading";
 import AuthGuard from "@/components/auth-guard";
