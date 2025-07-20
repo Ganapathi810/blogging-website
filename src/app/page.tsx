@@ -5,6 +5,8 @@ import { Suspense } from "react";
 
 export default async function Home() {
 
+  console.log('Home is rendered--------------------------------------------------------')
+
   const blogs = getAllBlogsInDb()
 
   return (  

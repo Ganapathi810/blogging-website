@@ -33,6 +33,7 @@ export default async function RootLayout({
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
 
   if(!session) {
+    console.log('session does not exits----------------------------------------------------------------------')
     redirect('/api/auth/signin')
   } 
   
