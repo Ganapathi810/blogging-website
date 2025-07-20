@@ -13,7 +13,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 sameSite : "lax",
                 path : '/',
                 secure : true,
-                domain : "https://blogging-website-w7uh.vercel.app/"
+                domain : ".vercel.app"
             }
         }
     },
