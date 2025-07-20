@@ -5,6 +5,18 @@ import prisma from './prisma'
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
     debug: true,
+    cookies : {
+        sessionToken : {
+            name : `__Secure-next-auth.session-token`,
+            options : {
+                httpOnly : true,
+                sameSite : "lax",
+                path : '/',
+                secure : true,
+                domain : "https://blogging-website-w7uh.vercel.app/"
+            }
+        }
+    },
     providers : [
         GitHub({
             clientId : process.env.GITHUB_CLIENT_ID,
