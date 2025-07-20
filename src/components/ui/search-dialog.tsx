@@ -8,6 +8,7 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import { Blog } from "@prisma/client"
+import { LoaderCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 import { useEffect, useState } from "react"
@@ -16,13 +17,20 @@ export default function SearchDialog({ open, setOpen } : { open : boolean, setOp
     const [blogs,setBlogs] = useState<Blog[]>([])
     const [query,setQuery] = useState('')
     const router = useRouter()
+    const [loading,setLoading] = useState(false)
 
     useEffect(() => {
-        if(query.length > 1) {
-            fetch(`/api/blog/search?q=${encodeURIComponent(query)}`)
+        setLoading(true)
+        if(query.length > 0) {
+            fetch(`/api/blog/search?query=${encodeURIComponent(query)}`)
                 .then(async (res) => {
                     const result = await res.json()
                     setBlogs(result)
+                    setLoading(false)
+                })
+                .catch((error) => {
+                    console.log('Failed to search blogs : '+error)
+                    setLoading(false)
                 })
         } else {
             setBlogs([])
@@ -43,8 +51,9 @@ export default function SearchDialog({ open, setOpen } : { open : boolean, setOp
     return (
         <CommandDialog open={open} onOpenChange={setOpen}>
             <CommandInput placeholder="Search blog..." onValueChange={(value) => setQuery(value)} />
+            {loading && <div className="w-full flex justify-center p-3"><LoaderCircle className="h-7 w-7 stroke-green-500 animate-spin" /></div>}
             <CommandList>
-                <CommandEmpty>No results found.</CommandEmpty>
+                {!loading && <CommandEmpty>No results found.</CommandEmpty>}
                 {blogs.map((blog) => (
                     <CommandItem
                         key={blog.id}
