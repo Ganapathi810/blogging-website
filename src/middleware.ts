@@ -4,13 +4,14 @@ import { getToken } from 'next-auth/jwt'
 
 
 export default async function middleware(request : NextRequest) {
-    // console.log(`[Middleware] Running for path: ${request.nextUrl.pathname}`);
+    console.log(`[Middleware] Running for path: ${request.nextUrl.pathname}`);
 
-    // const token = await getToken({
-    //     req : request,
-    //     secret : process.env.AUTH_SECRET
-    // })
+    const token = await getToken({
+        req : request,
+        secret : process.env.AUTH_SECRET
+    })
 
+    console.log(token,' token ')
 
     // if(!token) {
     //     console.log(`[Middleware] No token found for ${request.nextUrl.pathname}.`);
