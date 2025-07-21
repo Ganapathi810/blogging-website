@@ -18,6 +18,9 @@ interface AuthGuardProps {
 }
 
 export default function AuthGuard({ children }: AuthGuardProps) {
+
+
+  console.log('inside auth guard ')
   const { status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
@@ -26,6 +29,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     // If the session is still loading, do nothing.
     // This is crucial to prevent premature redirects.
     if (status === 'loading') {
+      console.log('loading... inside auth guard use effect')
       return;
     }
 
@@ -39,11 +43,13 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   // While loading, show a loading indicator.
   if (status === 'loading') {
+    console.log('inside auth guard , loading')
     return <LoadingSpinner />;
   }
 
   // If authenticated, render the children (your protected content).
   if (status === 'authenticated') {
+    console.log('in side auth guard , authenticated')
     return <>{children}</>;
   }
 

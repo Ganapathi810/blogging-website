@@ -22,12 +22,15 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
     callbacks : {
         async signIn({ user }) {
-
+            console.log('Inside signIn')
+            
             if(!user.email) {
+                console.log('user.email does not exits')
                 return false
             }
-
+            
             try {
+                console.log('inside try in signIn')
                 await prisma.user.upsert({
                     where : { email : user.email },
                     update : {
@@ -43,13 +46,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 
                 return true;
             } catch (error) {
+                console.log('inside catch in signIn')
                 console.error('User creation failed: ',error)
                 return false;
             }
         },
         async jwt({ token, user }) {
+            console.log('inside jwt callback')
             if(user?.email) {
                 try {
+                    console.log('inside try in jwt and inside user.email exits')
                     const dbUser = await prisma.user.findUnique({
                         where : { email : user.email},
                         select : {
@@ -68,13 +74,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 
         },
         async session({ session, token }) {
+            console.log('inside session callback')
             if(session.user && token.id) {
+                console.log('session.user and session.token.id exits')
                 session.user.id = token.id as string
             }
 
             return session
         },
         async redirect() {
+            console.log('inside redirec callback')
             return '/'
         }
     }

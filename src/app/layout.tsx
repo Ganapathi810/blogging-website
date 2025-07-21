@@ -30,6 +30,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
+  console.log('Inside layout')
+
   const session = await auth()
   const cookieStore = await cookies()
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
@@ -42,6 +44,7 @@ export default async function RootLayout({
 
   if (session?.user?.id) {
       try {
+        console.log('inside layout and inside session.user.id exits '+session.user.id)
           // Assign the promise directly. Do NOT await here, as AppSidebar expects a Promise.
           blogsPromise = getAllBlogsOfUser(Number(session.user.id));
       } catch (error) {
@@ -50,6 +53,7 @@ export default async function RootLayout({
           blogsPromise = Promise.resolve([]);
       }
   } else {
+    console.log('session.user.id does not exits')
       // If no session, immediately resolve to an empty array.
       blogsPromise = Promise.resolve([]);
   }
