@@ -10,7 +10,6 @@ import { AppSidebar } from "@/components/app-sidebar";
 import TopBar from "@/components/top-bar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { cookies } from "next/headers";
-// import { redirect } from "next/navigation";
 import { getAllBlogsOfUser } from "@/lib/db/blog";
 import { LoadingContextProvider } from "@/contexts/loading";
 import AuthGuard from "@/components/auth-guard";
@@ -30,35 +29,23 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  console.log('Inside layout')
-
   const session = await auth()
   const cookieStore = await cookies()
   const defaultOpen = cookieStore.get("sidebar_state")?.value === "true"
 
-  // if(!session) {
-  //   console.log('session does not exits----------------------------------------------------------------------')
-  //   redirect('/api/auth/signin')
-  // } 
   let blogsPromise: Promise<Blog[]>;
 
   if (session?.user?.id) {
       try {
-        console.log('inside layout and inside session.user.id exits '+session.user.id)
-          // Assign the promise directly. Do NOT await here, as AppSidebar expects a Promise.
           blogsPromise = getAllBlogsOfUser(Number(session.user.id));
       } catch (error) {
           console.error("Failed to fetch blogs in RootLayout:", error);
-          // On error, resolve to an empty array to maintain the Promise<Blog[]> type.
           blogsPromise = Promise.resolve([]);
       }
   } else {
-    console.log('session.user.id does not exits')
-      // If no session, immediately resolve to an empty array.
       blogsPromise = Promise.resolve([]);
   }
   
-  // const blogs = getAllBlogsOfUser(Number(session?.user?.id))
   
   return (
     <html lang="en">
@@ -72,14 +59,12 @@ export default async function RootLayout({
                         <GlobalDeleteBlogAlertDialog />
                         <GlobalAlertMessage />
                         <AuthGuard>
-
-                        <AppSidebar blogs={blogsPromise} />
-                      <div className="flex-1 flex flex-col bg-green-100">
-                          <TopBar />
-                          <main className="overflow-y-auto">{children}</main>
-                      </div>
-                      </AuthGuard>
-
+                          <AppSidebar blogs={blogsPromise} />
+                            <div className="flex-1 flex flex-col bg-green-100">
+                                <TopBar />
+                                <main className="overflow-y-auto">{children}</main>
+                            </div>
+                        </AuthGuard>
                     </div>
                   </SidebarProvider>
                 </LoadingContextProvider>

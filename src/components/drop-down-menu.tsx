@@ -9,14 +9,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { LogOut } from "lucide-react";
+import { Loader2, LogOut } from "lucide-react";
 import Link from "next/link";
 import { logout } from "@/lib/actions/logout";
 import { useUser } from "@/hooks/use-user-data";
+import { useAlertInfoContext } from "@/contexts/alert-info-context";
+import { useState } from "react";
 
 
 export default function DropDownMenu() {
     const { user }  = useUser()
+    const [isLoggingOut,setIsLoggingOut] = useState(false);
+    const { setAlertInfo } = useAlertInfoContext()
+
+
+    const handleLogout = async () => {
+        try {
+            setIsLoggingOut(true)
+            await logout()
+        } catch (error) {
+            console.log("Failed to logout : "+error)
+            setIsLoggingOut(false)
+            setAlertInfo({ status : 'error', message : "Failed to logout, try again"})
+        }
+    }
     
     return (
         <DropdownMenu>
@@ -36,9 +52,9 @@ export default function DropDownMenu() {
                         <span className="text-green-500">View your profile page</span>
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => logout()} >
-                    <LogOut />
-                    <span>log out</span>
+                <DropdownMenuItem onClick={handleLogout} disabled={isLoggingOut} >
+                    {isLoggingOut ? <Loader2 className="h-4 w-4 animate-spin mr-1 fill-green-500"/> : <LogOut className="mr-1"/>}
+                    <span>{isLoggingOut ? "logging out..." : "logout"}</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

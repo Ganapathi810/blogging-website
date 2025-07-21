@@ -4,5 +4,11 @@
 import { signOut } from "@/lib/auth"
 
 export const logout = async () => { 
-    await signOut({ redirectTo : '/api/auth/signin'})
+    try {
+        await signOut({ redirectTo : '/api/auth/signin'})
+    } catch(error) {
+        console.log("Failed to sign out : "+error)
+        throw error;
+    }
 }
+
