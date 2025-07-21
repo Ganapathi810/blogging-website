@@ -24,8 +24,8 @@ export default function DropDownMenu() {
 
 
     const handleLogout = async () => {
+        setIsLoggingOut(true)
         try {
-            setIsLoggingOut(true)
             await logout()
         } catch (error) {
             console.log("Failed to logout : "+error)
