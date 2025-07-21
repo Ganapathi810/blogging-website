@@ -4,6 +4,7 @@ import { getToken } from 'next-auth/jwt'
 
 
 export default async function middleware(request : NextRequest) {
+    console.log(`[Middleware] Running for path: ${request.nextUrl.pathname}`);
 
     const token = await getToken({
         req : request,
@@ -12,8 +13,10 @@ export default async function middleware(request : NextRequest) {
 
 
     if(!token) {
+        console.log(`[Middleware] No token found for ${request.nextUrl.pathname}.`);
         return NextResponse.redirect(new URL('/api/auth/signin',request.url))
     }
+    console.log(`[Middleware] token found for ${request.nextUrl.pathname}. and proceeding ahead`);
 
     return NextResponse.next()
 }
