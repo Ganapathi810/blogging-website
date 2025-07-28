@@ -11,7 +11,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Loader2, LogOut } from "lucide-react";
 import Link from "next/link";
-import { logout } from "@/lib/actions/logout";
+import { signOut } from "@/lib/auth" 
 import { useUser } from "@/hooks/use-user-data";
 import { useAlertInfoContext } from "@/contexts/alert-info-context";
 import { useState } from "react";
@@ -26,7 +26,7 @@ export default function DropDownMenu() {
     const handleLogout = async () => {
         setIsLoggingOut(true)
         try {
-            await logout()
+             await signOut({ redirectTo: '/' });
         } catch (error) {
             console.log("Failed to logout : "+error)
             setIsLoggingOut(false)
